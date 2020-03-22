@@ -112,7 +112,7 @@ else
 fi
 
 # Handle eula
-if [ ${AUTO_APPROVE} ]
+if [ ! ${AUTO_APPROVE} ]
 then
     while true
     do
