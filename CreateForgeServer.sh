@@ -64,7 +64,8 @@ do
 done
 
 # Setup
-URL_FORGE_INSTALLER='https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.12-14.21.1.2387/forge-1.12-14.21.1.2387-installer.jar'
+URL_FORGE_INSTALLER='https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.12.2-14.23.5.2847/forge-1.12.2-14.23.5.2847-installer.jar'
+URL_MODPACK='https://media.forgecdn.net/files/2836/138/RLCraft+Server+Pack+1.12.2+-+Beta+v2.8.1.zip'
 OLD_IFS=${IFS}
 DIR="$(pwd)/${OUTPUT_DIR}"
 if [ -d ${OUTPUT_DIR} ]
@@ -100,9 +101,14 @@ echo '> Forge installer complete'
 rm ${FORGE_INSTALLER_FILE} ${FORGE_INSTALLER_FILE}.log forge-${FORGE_MCVERSION}-${FORGE_VERSION}-changelog.txt
 echo '> Deleted installer and log'
 
-# Pull and unzip modpack (unfinished)
-# wget -q ${URL_MODPACK}
-# unzip ...
+# Pull and unzip modpack
+MODPACK_ZIP='modpack.zip'
+echo '> Fetching modpack'
+wget -q -O ${MODPACK_ZIP} ${URL_MODPACK} # look at --progress=TYPE for progress
+echo '> Unzipping modpack'
+unzip -q -d tmp ${MODPACK_ZIP}
+cp -a tmp/. ./
+rm -r tmp ${MODPACK_ZIP}
 
 # Initialize server
 echo '> Initializing the server'
@@ -124,7 +130,7 @@ then
                 break
             ;;
             [Nn]* )
-            echo '> Ending process...'
+                echo '> Ending process...'
                 exit 0;
             ;;
             * )
