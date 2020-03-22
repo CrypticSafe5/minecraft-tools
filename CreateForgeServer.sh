@@ -65,7 +65,7 @@ done
 
 # Setup
 URL_FORGE_INSTALLER='https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.12.2-14.23.5.2768/forge-1.12.2-14.23.5.2768-installer.jar'
-URL_MODPACK='https://media.forgecdn.net/files/2836/137/RLCraft+1.12.2+-+Beta+v2.8.1.zip'
+URL_MODPACK='https://edge.forgecdn.net/files/2836/138/RLCraft%20Server%20Pack%201.12.2%20-%20Beta%20v2.8.1.zip'
 OLD_IFS=${IFS}
 DIR="$(pwd)/${OUTPUT_DIR}"
 if [ -d ${OUTPUT_DIR} ]
