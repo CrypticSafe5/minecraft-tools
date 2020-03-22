@@ -65,6 +65,7 @@ done
 
 # Setup
 URL_FORGE_INSTALLER='https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.12-14.21.1.2387/forge-1.12-14.21.1.2387-installer.jar'
+URL_MODPACK='https://media.forgecdn.net/files/2836/137/RLCraft+1.12.2+-+Beta+v2.8.1.zip'
 OLD_IFS=${IFS}
 DIR="$(pwd)/${OUTPUT_DIR}"
 if [ -d ${OUTPUT_DIR} ]
@@ -80,6 +81,9 @@ IFS='-'
 read -ra ARR <<< ${URL_FORGE_INSTALLER}
 FORGE_MCVERSION="${ARR[-3]}"
 FORGE_VERSION="${ARR[-2]}"
+IFS='/'
+read -ra ARR <<< ${URL_MODPACK}
+MODPACK_ZIP="${ARR[-1]}"
 IFS=${OLD_IFS}
 FORGE_INSTALLER_FILE="${DIR}/forge-${FORGE_MCVERSION}-${FORGE_VERSION}-installer.jar"
 FORGE_UNIVERSAL_FILE="${DIR}/forge-${FORGE_MCVERSION}-${FORGE_VERSION}-universal.jar"
@@ -100,9 +104,13 @@ echo '> Forge installer complete'
 rm ${FORGE_INSTALLER_FILE} ${FORGE_INSTALLER_FILE}.log forge-${FORGE_MCVERSION}-${FORGE_VERSION}-changelog.txt
 echo '> Deleted installer and log'
 
-# Pull and unzip modpack (unfinished)
-# wget -q ${URL_MODPACK}
-# unzip ...
+# Pull and unzip modpack
+echo '> Fetching modpack'
+wget -q ${URL_MODPACK}
+echo '> Unzipping modpack'
+unzip -d tmp MODPACK_ZIP
+cp -a tmp/overrides/. ./
+rm -r tmp
 
 # Initialize server
 echo '> Initializing the server'
@@ -124,7 +132,7 @@ then
                 break
             ;;
             [Nn]* )
-            echo '> Ending process...'
+                echo '> Ending process...'
                 exit 0;
             ;;
             * )
