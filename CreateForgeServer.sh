@@ -109,7 +109,7 @@ echo '> Fetching modpack'
 wget -q ${URL_MODPACK}
 echo '> Unzipping modpack'
 unzip -q -d tmp ${MODPACK_ZIP}
-cp -a tmp/overrides/. ./
+cp -a tmp/. ./
 rm -r tmp ${MODPACK_ZIP}
 
 # Initialize server
