@@ -7,8 +7,6 @@ RAM_MIN='1024'
 RAM_MAX='4096'
 LOG=true
 
-# add flag for auto yes on eula
-
 # Help message
 showHelp()
 {
@@ -69,6 +67,11 @@ done
 URL_FORGE_INSTALLER='https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.12-14.21.1.2387/forge-1.12-14.21.1.2387-installer.jar'
 OLD_IFS=${IFS}
 DIR="$(pwd)/${OUTPUT_DIR}"
+
+if [ -d ${OUTPUT_DIR} ]
+then
+    rm -r ${OUTPUT_DIR}
+fi
 mkdir ${OUTPUT_DIR}
 cd ${OUTPUT_DIR}
 
@@ -108,7 +111,7 @@ else
     java -Xms${RAM_MIN}M -Xmx${RAM_MAX}M -jar ${FORGE_UNIVERSAL_FILE} nogui > /dev/null 2>&1
 fi
 
-# Put prompt saying you agree else kill process
+# Handle eula
 if ${AUTO_APPROVE}
 then
     while true
@@ -116,10 +119,12 @@ then
         read -p '\> Approve eula: ' yn
         case ${yn} in
             [Yy]* )
-                echo 'eula=true' > eula.txt
+                EULA=$(<eula.txt)
+                echo "${EULA/"eula=false"/"eula=true"}" > eula.txt
                 break
             ;;
             [Nn]* )
+            echo '\> Ending process...'
                 exit 0;
             ;;
             * )
@@ -129,7 +134,6 @@ then
         esac
     done
 fi
-
 echo '\> Set eula to true'
 
 # Create service file
