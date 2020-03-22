@@ -81,9 +81,6 @@ IFS='-'
 read -ra ARR <<< ${URL_FORGE_INSTALLER}
 FORGE_MCVERSION="${ARR[-3]}"
 FORGE_VERSION="${ARR[-2]}"
-IFS='/'
-read -ra ARR <<< ${URL_MODPACK}
-MODPACK_ZIP="${ARR[-1]}"
 IFS=${OLD_IFS}
 FORGE_INSTALLER_FILE="${DIR}/forge-${FORGE_MCVERSION}-${FORGE_VERSION}-installer.jar"
 FORGE_UNIVERSAL_FILE="${DIR}/forge-${FORGE_MCVERSION}-${FORGE_VERSION}-universal.jar"
@@ -105,8 +102,9 @@ rm ${FORGE_INSTALLER_FILE} ${FORGE_INSTALLER_FILE}.log forge-${FORGE_MCVERSION}-
 echo '> Deleted installer and log'
 
 # Pull and unzip modpack
+MODPACK_ZIP='modpack.zip'
 echo '> Fetching modpack'
-wget -q ${URL_MODPACK}
+wget -q -O ${MODPACK_ZIP} ${URL_MODPACK} # look at --progress=TYPE for progress
 echo '> Unzipping modpack'
 unzip -q -d tmp ${MODPACK_ZIP}
 cp -a tmp/. ./
