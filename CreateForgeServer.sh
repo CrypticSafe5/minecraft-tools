@@ -47,7 +47,7 @@ do
         shift
         RAM_MAX=${1}
         ;;
-    -q | --quiet
+    -q | --quiet )
         LOG=false
         ;;
     * )
@@ -73,7 +73,7 @@ IFS=${OLD_IFS}
 FORGE_INSTALLER_FILE="${DIR}/forge-${FORGE_MCVERSION}-${FORGE_VERSION}-installer.jar"
 FORGE_UNIVERSAL_FILE="${DIR}/forge-${FORGE_MCVERSION}-${FORGE_VERSION}-universal.jar"
 
-# Get and use Forge installer
+# Get Forge installer
 echo \> Fetching Forge installer
 wget -q ${URL_FORGE_INSTALLER}
 echo \> Unzipping Forge installer
@@ -85,9 +85,11 @@ then
 else
     java -jar ${FORGE_INSTALLER_FILE} --installServer > /dev/null 2>&1
 fi
-echo \> Forge installer complete
+echo \> 'Forge installer complete'
 rm ${FORGE_INSTALLER_FILE} ${FORGE_INSTALLER_FILE}.log forge-${FORGE_MCVERSION}-${FORGE_VERSION}-changelog.txt
-echo \> Deleted installer and log
+echo \> 'Deleted installer and log'
+
+# Pull and unzip modpack
 
 # Initialize server
 echo \> Initializing the server
@@ -97,7 +99,31 @@ then
 else
     java -Xms${RAM_MIN}M -Xmx${RAM_MAX}M -jar ${FORGE_UNIVERSAL_FILE} nogui > /dev/null 2>&1
 fi
-echo 'eula=true' > eula.txt
-echo \> Set eula to true
-echo \> COMPLETE
+
+# Put prompt saying you agree else kill process
+while true
+do
+    read -p 'Approve eula: ' yn
+    case ${yn} in
+        [Yy]* )
+            echo 'eula=true' > eula.txt
+            break
+        ;;
+        [Nn]* )
+            exit 0;
+        ;;
+        * )
+            echo 'Please enter "y" or "n"'
+            continue
+        ;;
+    esac
+done
+
+echo '\> Set eula to true'
+
+# Create service file
+# Start service
+
+echo '\> COMPLETE!!!'
+# echo "\> You can find your server at ${OUTPUT_DIR} and your service file at ${place or another}"
 exit 0
