@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Default values
-AUTO_APPROVE=false
+AUTO_APPROVE=''
 OUTPUT_DIR='OUTPUT'
 RAM_MIN='1024'
 RAM_MAX='4096'
-LOG=true
+LOG='true'
 
 # Help message
 showHelp()
@@ -90,7 +90,7 @@ wget -q ${URL_FORGE_INSTALLER}
 echo '> Unzipping Forge installer'
 unzip -q ${FORGE_INSTALLER_FILE}
 echo '> Running Forge installer'
-if ${LOG}
+if [ ${LOG} ]
 then
     java -jar ${FORGE_INSTALLER_FILE} --installServer >> ../CreateForgeLog.txt
 else
@@ -104,7 +104,7 @@ echo '> Deleted installer and log'
 
 # Initialize server
 echo '> Initializing the server'
-if ${LOG}
+if [ ${LOG} ]
 then
     java -Xms${RAM_MIN}M -Xmx${RAM_MAX}M -jar ${FORGE_UNIVERSAL_FILE} nogui >> ../CreateForgeLog.txt
 else
@@ -112,7 +112,7 @@ else
 fi
 
 # Handle eula
-if ${AUTO_APPROVE}
+if [ ${AUTO_APPROVE} ]
 then
     while true
     do
