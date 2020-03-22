@@ -1,10 +1,13 @@
 #!/bin/bash
 
 # Default values
+AUTO_APPROVE=false
 OUTPUT_DIR='OUTPUT'
 RAM_MIN='1024'
 RAM_MAX='4096'
 LOG=true
+
+# add flag for auto yes on eula
 
 # Help message
 showHelp()
@@ -24,6 +27,8 @@ showHelp()
     echo '    Minimum amount of ram to be used with java'
     echo '  -x, --ram-max'
     echo '    Maximum amount of ram to be used with java'
+    echo '  -a, --approve'
+    echo '    Auto approve eula'
     echo ''
 }
 
@@ -34,22 +39,25 @@ do
     -h | --help )
         showHelp
         exit 0
-        ;;
+    ;;
     -o | --out-dir )
         shift
         OUTPUT_DIR=${1}
-        ;;
+    ;;
     -n | --ram-min )
         shift
         RAM_MIN=${1}
-        ;;
+    ;;
     -x | --ram-max )
         shift
         RAM_MAX=${1}
-        ;;
+    ;;
     -q | --quiet )
         LOG=false
-        ;;
+    ;;
+    -a | --approve )
+        AUTO_APPROVE=true
+    ;;
     * )
         echo Unknown option \"${1}\"
         exit 1
@@ -101,23 +109,26 @@ else
 fi
 
 # Put prompt saying you agree else kill process
-while true
-do
-    read -p 'Approve eula: ' yn
-    case ${yn} in
-        [Yy]* )
-            echo 'eula=true' > eula.txt
-            break
-        ;;
-        [Nn]* )
-            exit 0;
-        ;;
-        * )
-            echo 'Please enter "y" or "n"'
-            continue
-        ;;
-    esac
-done
+if ${AUTO_APPROVE}
+then
+    while true
+    do
+        read -p '\> Approve eula: ' yn
+        case ${yn} in
+            [Yy]* )
+                echo 'eula=true' > eula.txt
+                break
+            ;;
+            [Nn]* )
+                exit 0;
+            ;;
+            * )
+                echo '\> Please enter "y" or "n"'
+                continue
+            ;;
+        esac
+    done
+fi
 
 echo '\> Set eula to true'
 
