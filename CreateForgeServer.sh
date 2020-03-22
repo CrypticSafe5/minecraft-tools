@@ -108,7 +108,7 @@ echo '> Deleted installer and log'
 echo '> Fetching modpack'
 wget -q ${URL_MODPACK}
 echo '> Unzipping modpack'
-unzip -d tmp MODPACK_ZIP
+unzip -d tmp ${MODPACK_ZIP}
 cp -a tmp/overrides/. ./
 rm -r tmp
 
