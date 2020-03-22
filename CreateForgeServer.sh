@@ -51,10 +51,10 @@ do
         RAM_MAX=${1}
     ;;
     -q | --quiet )
-        LOG=false
+        LOG=''
     ;;
     -a | --approve )
-        AUTO_APPROVE=true
+        AUTO_APPROVE='true'
     ;;
     * )
         echo Unknown option \"${1}\"
@@ -100,7 +100,9 @@ echo '> Forge installer complete'
 rm ${FORGE_INSTALLER_FILE} ${FORGE_INSTALLER_FILE}.log forge-${FORGE_MCVERSION}-${FORGE_VERSION}-changelog.txt
 echo '> Deleted installer and log'
 
-# Pull and unzip modpack
+# Pull and unzip modpack (unfinished)
+# wget -q ${URL_MODPACK}
+# unzip ...
 
 # Initialize server
 echo '> Initializing the server'
@@ -133,7 +135,7 @@ then
     done
 fi
 EULA=$(<eula.txt)
-echo "${EULA/"eula=false"/"eula=true"}" > eula.txt
+echo "${EULA/'eula=false'/'eula=true'}" > eula.txt
 echo '> Set eula to true'
 
 # Create service file
