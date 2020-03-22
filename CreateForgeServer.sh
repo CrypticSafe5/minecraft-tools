@@ -119,8 +119,6 @@ then
         read -p '> Approve eula: ' yn
         case ${yn} in
             [Yy]* )
-                EULA=$(<eula.txt)
-                echo "${EULA/"eula=false"/"eula=true"}" > eula.txt
                 break
             ;;
             [Nn]* )
@@ -134,6 +132,8 @@ then
         esac
     done
 fi
+EULA=$(<eula.txt)
+echo "${EULA/"eula=false"/"eula=true"}" > eula.txt
 echo '> Set eula to true'
 
 # Create service file
