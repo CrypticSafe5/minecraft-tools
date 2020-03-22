@@ -14,7 +14,7 @@ showHelp()
     echo 'Usage:'
     echo "  ${0} [-h / --help] [-o / --out-dir] NEW_SERVER"
     echo '  [-n / --ram-min] 1024 [-x / --ram-max] 4096'
-    echo '  [-q / --quiet]'
+    echo '  [-q / --quiet] [-a / --approve]'
     echo ''
     echo 'Options:'
     echo '  -h, --help'
