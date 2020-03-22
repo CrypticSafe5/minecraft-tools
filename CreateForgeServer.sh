@@ -108,9 +108,9 @@ echo '> Deleted installer and log'
 echo '> Fetching modpack'
 wget -q ${URL_MODPACK}
 echo '> Unzipping modpack'
-unzip -d tmp ${MODPACK_ZIP}
+unzip -q -d tmp ${MODPACK_ZIP}
 cp -a tmp/overrides/. ./
-rm -r tmp
+rm -r tmp ${MODPACK_ZIP}
 
 # Initialize server
 echo '> Initializing the server'
